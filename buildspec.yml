@@ -1,0 +1,21 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - echo install step...
+  pre_build:
+    commands:
+      - echo logging in to AWS ECR...
+      - $(aws ecr get-login --no-include-email --region ${region})
+  build:
+    commands:
+      - docker image build -t ${build_tag} -f ${docker_path_build} .
+      - echo Building the rust binary...
+      - docker container run --rm -v $PWD:/code -v $HOME/.cargo/registry:/root/.cargo/registry -v $HOME/.cargo/git:/root/.cargo/git ${build_tag}
+      - echo Building the Docker deploy image...
+      - docker build -t ${tag} -f ${docker_path_deploy} .
+      - docker tag ${tag} ${repository_tag}
+  post_build:
+    commands:
+      - echo push latest Docker images to ECR...
+      - docker push ${repository_tag}
