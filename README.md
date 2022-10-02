@@ -1,0 +1,1 @@
+# terraform-sns-slack_notify
