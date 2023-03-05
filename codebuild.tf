@@ -96,6 +96,7 @@ resource "aws_iam_policy" "codebuild-log" {
           Resource = [
             "arn:aws:logs:${var.region}:${data.aws_caller_identity.self.account_id}:log-group:/aws/codebuild/${var.project_name}",
             "arn:aws:logs:${var.region}:${data.aws_caller_identity.self.account_id}:log-group:/aws/codebuild/${var.project_name}:*",
+            "arn:aws:logs:${var.region}:${data.aws_caller_identity.self.account_id}:log-group:/aws/codebuild:log-stream:*",
             "arn:aws:logs:${var.region}:${data.aws_caller_identity.self.account_id}:log-group:/aws/codebuild:log-stream:${var.project_name}/*",
           ]
         },
